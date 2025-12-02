@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Misc
+.DS_Store
+*.log
+
+# Environment
+.env*
+!.env.example
+
+# Database
+prisma/migrations
+*.db
+*.db-journal
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
