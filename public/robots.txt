@@ -1,0 +1,14 @@
+# robots.txt for VorbaBuna
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin areas (if implemented later)
+Disallow: /api/admin/
+
+# Sitemap location
+Sitemap: https://vorbabuna.vercel.app/sitemap.xml
+
+# Crawl-delay for good measure
+Crawl-delay: 1

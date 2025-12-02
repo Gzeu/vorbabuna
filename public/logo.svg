@@ -1,0 +1,19 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C41E3A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DAA520;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Stylized Romanian folk book -->
+  <rect x="8" y="6" width="32" height="36" rx="2" fill="url(#logo-gradient)"/>
+  <rect x="8" y="6" width="32" height="36" rx="2" fill="none" stroke="#FFF8DC" stroke-width="2"/>
+  <!-- Pages -->
+  <line x1="12" y1="14" x2="36" y2="14" stroke="#FFF8DC" stroke-width="1.5" opacity="0.8"/>
+  <line x1="12" y1="20" x2="32" y2="20" stroke="#FFF8DC" stroke-width="1.5" opacity="0.8"/>
+  <line x1="12" y1="26" x2="36" y2="26" stroke="#FFF8DC" stroke-width="1.5" opacity="0.8"/>
+  <line x1="12" y1="32" x2="28" y2="32" stroke="#FFF8DC" stroke-width="1.5" opacity="0.8"/>
+  <!-- Star accent -->
+  <path d="M24 34 L26 37 L29 37 L27 39 L28 42 L24 40 L20 42 L21 39 L19 37 L22 37 Z" 
+        fill="#FECE00" opacity="0.9"/>
+</svg>
