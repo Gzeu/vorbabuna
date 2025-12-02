@@ -39,20 +39,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create contribution record
-    const contribution = await prisma.contribution.create({
-      data: {
-        text,
-        meaning,
-        category,
-        email: email || '',
-        status: 'pending',
-      },
-    });
 
     // Optionally create proverb (unvalidated) for future approval
     const imagePrompt = getFolkArtPrompt(text, category);
-    const keywords = text.split(' ').slice(0, 10);
+      // const keywords = text.split(' ').slice(0, 10);
 
     await prisma.proverb.create({
       data: {
