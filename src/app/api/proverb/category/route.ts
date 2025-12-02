@@ -1,50 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
-import { generateImageUrl } from '@/lib/pollinations';
 
 export async function GET(req: NextRequest) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const category = searchParams.get('name');
-    const limit = parseInt(searchParams.get('limit') || '20');
-
-    if (!category) {
-      return NextResponse.json(
-        { error: 'Category name required' },
-        { status: 400 }
-      );
-    }
+    const skip = parseInt(searchParams.get('skip') || '0');
+    const take = Math.min(parseInt(searchParams.get('take') || '10'), 100);
 
     const proverbs = await prisma.proverb.findMany({
-      where: {
-        category: {
-          equals: category,
-          mode: 'insensitive',
-        },
-        validated: true,
-      },
-      take: Math.min(limit, 100),
-      orderBy: [
-        { popularity: 'desc' },
-        { createdAt: 'desc' },
-      ],
+      skip,
+      take,
+      orderBy: { id: 'asc' },
     });
 
-    const proverbsWithImages = proverbs.map((p) => ({
-      ...p,
-      imageUrl: generateImageUrl(p.imagePrompt, {
-        seed: p.id,
-        width: 800,
-        height: 600,
-      }),
-      keywords: JSON.parse(p.keywords),
-    }));
-
-    return NextResponse.json(proverbsWithImages);
+    return NextResponse.json(proverbs, { status: 200 });
   } catch (error) {
-    console.error('Category fetch error:', error);
+    console.error('Error fetching proverbs:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch proverbs by category' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
