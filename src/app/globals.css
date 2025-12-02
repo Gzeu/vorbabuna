@@ -2,32 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --folk-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l5 10h10l-8 8 3 10-10-6-10 6 3-10-8-8h10z' fill='%23C41E3A' fill-opacity='0.05'/%3E%3C/svg%3E");
+    --background: #FFF8DC;
+    --foreground: #1a1a1a;
+  }
+  
+  body {
+    @apply bg-folk-cream text-gray-900 antialiased;
+    background-image: var(--folk-pattern);
+  }
+
+  @font-face {
+    font-family: 'Playfair Display';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap');
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer components {
+  .btn-folk {
+    @apply px-8 py-4 bg-gradient-to-r from-folk-red to-folk-gold 
+      text-white font-semibold rounded-full shadow-folk
+      hover:shadow-glow hover:scale-105 transition-all duration-300
+      border-2 border-white/20;
+  }
+  
+  .nav-link {
+    @apply flex items-center gap-2 px-4 py-2 rounded-lg
+      text-gray-700 hover:text-folk-red hover:bg-folk-cream/50
+      transition-all duration-200 font-medium;
+  }
+  
+  .folk-border-top {
+    @apply relative;
+  }
+  
+  .folk-border-top::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-2 bg-repeat-x;
+    background-image: linear-gradient(90deg, 
+      transparent 0%, 
+      #C41E3A 20%, 
+      #FECE00 40%,
+      #002868 60%,
+      #C41E3A 80%,
+      transparent 100%
+    );
+  }
+  
+  .text-folk-gradient {
+    @apply bg-gradient-to-r from-folk-red via-folk-gold to-folk-blue 
+      bg-clip-text text-transparent;
+  }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .text-shadow-folk {
+    text-shadow: 2px 2px 4px rgba(196, 30, 58, 0.3);
+  }
+  
+  .scrollbar-folk::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .scrollbar-folk::-webkit-scrollbar-track {
+    @apply bg-folk-cream;
+  }
+  
+  .scrollbar-folk::-webkit-scrollbar-thumb {
+    @apply bg-folk-red rounded-full;
+  }
+  
+  .scrollbar-folk::-webkit-scrollbar-thumb:hover {
+    @apply bg-folk-gold;
   }
 }
