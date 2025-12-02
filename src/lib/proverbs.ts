@@ -18,7 +18,7 @@ export async function getProverbById(id: string) {
   });
 }
 
-export async function searchProverbs(query: string, limit: number = 20), category?: string)
+export async function searchProverbs(query: string, limit: number = 20, category?: string) {
   if (!query || query.length < 2) return [];
 
   return prisma.proverb.findMany({
