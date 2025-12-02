@@ -94,12 +94,6 @@ async function seed() {
       { name: 'prietenie', description: 'Proverbe despre prieteni și camaraderie', icon: '🤝', color: '#DAA520' },
       { name: 'înțelepciune', description: 'Proverbe înțelepte', icon: '🦉', color: '#8B4513' },
       { name: 'dragoste', description: 'Proverbe despre iubire și relații', icon: '❤️', color: '#E8B4B8' },
-    ];
-
-    await prisma.category.deleteMany();
-    for (const category of categories) {
-      await prisma.category.create({ data: category });
-    }
 
     console.log('\n✨ Seeding completed successfully!');
     console.log(`📊 Total proverbs: ${PROVERBS.length}`);
