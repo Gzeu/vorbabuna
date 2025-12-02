@@ -1,0 +1,48 @@
+{
+  "name": "vorbabuna",
+  "version": "1.0.0",
+  "description": "Proverbe Românești Ilustrate cu AI - Aplicație web full-stack",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write .",
+    "db:push": "prisma db push",
+    "db:seed": "tsx scripts/seed-proverbs.ts",
+    "db:migrate": "prisma migrate dev",
+    "test": "jest",
+    "scrape": "python scripts/scrape-wikipedia.py"
+  },
+  "keywords": [
+    "proverbe",
+    "romani",
+    "ai-images",
+    "next.js",
+    "pollinations"
+  ],
+  "author": "George (Gzeu)",
+  "license": "MIT",
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.3.0",
+    "@prisma/client": "^5.0.0",
+    "tailwindcss": "^3.3.0",
+    "@tailwindcss/forms": "^0.5.7",
+    "axios": "^1.6.0",
+    "swr": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "prisma": "^5.0.0",
+    "tsx": "^4.0.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0",
+    "jest": "^29.7.0"
+  }
+}
