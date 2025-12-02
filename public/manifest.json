@@ -1,0 +1,23 @@
+{
+  "name": "VorbaBună - Proverbe Românești",
+  "short_name": "VorbaBună",
+  "description": "Descoperă înțelepciunea populară românească prin proverbe ilustrate cu AI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF8DC",
+  "theme_color": "#C41E3A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "48x48",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    }
+  ]
+}
