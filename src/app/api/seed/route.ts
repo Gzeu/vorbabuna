@@ -54,9 +54,5 @@ export async function POST() {
 }
 
 export async function GET() {
-  return NextResponse.json({
-    message: "POST /api/seed to seed database with proverbs",
-    example: "curl -X POST https://your-domain/api/seed",
-    database_configured: !!process.env.DATABASE_URL,
-  });
+    return POST();
 }
