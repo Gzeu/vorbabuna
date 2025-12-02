@@ -9,8 +9,7 @@ export async function GET(request: NextRequest) {
 
   try {
     if (query) {
-      const results = await searchProverbs(query, page, limit);
-      return NextResponse.json(results);
+      const results = await searchProverbs(query, limit);      return NextResponse.json(results);
     }
 
     const proverbs = await getProverbs(page, limit);
