@@ -1,41 +1,36 @@
-// This is your Prisma schema file
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Proverb {
-  id          String   @id @default(cuid())
-  text        String   @unique
-  meaning     String?
-  imageUrl    String?
-  imagePrompt String?  // AI prompt used to generate image
-  keywords    String?  // JSON array of keywords for search
-  category    String?
-  region      String?
-  validated   Boolean  @default(false)
-  popularity  Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  text         String   @unique
+  meaning      String
+  category     String?
+  region       String?
+  keywords     String?  // JSON array stringified
+  imagePrompt  String?
+  imageUrl     String?
+  audioUrl     String?
+  popularity   Int      @default(0)
+  source       String?
+  validated    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String?  // For user-submitted proverbs
 
-  @@index([popularity])
   @@index([category])
   @@index([validated])
-  @@map("proverbs")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  favorites String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("users")
+model QuizAttempt {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  score     Int
+  timestamp DateTime @default(now())
 }
