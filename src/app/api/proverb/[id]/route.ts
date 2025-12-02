@@ -37,7 +37,7 @@ export async function GET(
     return NextResponse.json({
       ...proverb,
       imageUrl,
-    });
+    }, { status: 200 });
   } catch (error) {
     console.error('Error fetching proverb:', error);
     return NextResponse.json(
