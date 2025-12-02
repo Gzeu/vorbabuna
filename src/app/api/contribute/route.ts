@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
       { 
         success: true, 
         message: 'Contribution submitted successfully',
-        id: contribution.id,
       },
       { status: 201 }
     );
