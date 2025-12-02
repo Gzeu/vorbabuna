@@ -50,8 +50,6 @@ export async function POST(req: NextRequest) {
         meaning,
         category,
         region: region || null,
-        keywords: JSON.stringify(keywords),
-        imagePrompt,
         validated: false,
         userId: email || null,
       },
