@@ -37,7 +37,6 @@ export async function GET(
     return NextResponse.json({
       ...proverb,
       imageUrl,
-      keywords: JSON.parse(proverb.keywords),
     });
   } catch (error) {
     console.error('Error fetching proverb:', error);
