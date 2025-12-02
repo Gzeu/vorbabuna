@@ -10,18 +10,22 @@ datasource db {
 }
 
 model Proverb {
-  id         String   @id @default(cuid())
-  text       String   @unique
-  meaning    String?
-  imageUrl   String?
-  category   String?
-  region     String?
-  popularity Int      @default(0)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id          String   @id @default(cuid())
+  text        String   @unique
+  meaning     String?
+  imageUrl    String?
+  imagePrompt String?  // AI prompt used to generate image
+  keywords    String?  // JSON array of keywords for search
+  category    String?
+  region      String?
+  validated   Boolean  @default(false)
+  popularity  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@index([popularity])
   @@index([category])
+  @@index([validated])
   @@map("proverbs")
 }
 
