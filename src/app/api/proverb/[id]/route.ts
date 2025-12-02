@@ -7,13 +7,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const id = parseInt(params.id);
-
-    if (isNaN(id)) {
-      return NextResponse.json(
-        { error: 'Invalid proverb ID' },
-        { status: 400 }
-      );
+    const id = params.id;
     }
 
     const proverb = await prisma.proverb.findUnique({
