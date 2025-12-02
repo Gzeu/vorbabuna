@@ -1,47 +1,46 @@
-# 🇷🇴 Vorbă Bună - Proverbe Românești Ilustrate cu AI
+# 🇷🇴 VorbaBună - Proverbe Românești Ilustrate cu AI
 
-**Aplicație web full-stack** pentru descoperirea și aprecierea înțelepciunii populare românești prin 1000+ proverbe autentice, imagini generate cu AI, text-to-speech și funcții interactive.
+> Descoperă înțelepciunea strămoșească românească printr-o experiență modernă și interactivă
 
-## ✨ Caracteristici
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.7-2d3748)](https://www.prisma.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-- 📚 **1000+ Proverbe Autentice** - Colecție cuprinzătoare de înțelepciune populară românească
-- 🎨 **Imagini Generate cu AI** - Ilustrații unice create cu DALL-E 3
-- 🔊 **Text-to-Speech** - Ascultă proverbele cu voce sintetizată românească (Google Cloud TTS)
-- 🔍 **Căutare Avansată** - Găsește proverbe după conținut, categorie sau regiune
-- ❤️ **Favorite & Share** - Salvează și distribuie proverbele preferate
-- 📱 **Responsive Design** - Experiență optimă pe toate dispozitivele
-- ⚡ **Performance** - Optimizat cu Next.js 14, App Router și caching inteligent
+## ✨ Features
 
-## 🛠️ Stack Tehnologic
+### 🎨 Design
+- **Paleta de culori inspiră din ie tradițională**: Roșu #C41E3A, Galben #FECE00, Albastru #002868
+- **Tipografie premium**: Playfair Display serif + Cinzel decorative
+- **Animații fluide**: Framer Motion pentru tranziții și micro-interacțiuni
+- **Responsive design**: Optimizat pentru mobile, tablet și desktop
+- **Dark mode ready**: Teme vizuale cu motive populare românești
 
-### Frontend
-- **Next.js 14** (App Router)
-- **React 18**
-- **TypeScript**
-- **Tailwind CSS**
-- **Lucide Icons**
+### 📚 Conținut
+- **1000+ Proverbe autentice** din toate regiunile României
+- **12 Categorii**: filozofie, familie, muncă, natură, dragoste, prietenie, etc.
+- **Imagini AI**: Fiecare proverb are ilustrații unice generate de Pollinations.ai
+- **Text-to-Speech**: Pronunție vocală pentru fiecare proverb
 
-### Backend
-- **Next.js API Routes**
-- **Prisma ORM**
-- **PostgreSQL**
-
-### AI & Services
-- **OpenAI API** (DALL-E 3 pentru generare imagini, GPT-4 pentru explicații)
-- **Google Cloud Text-to-Speech**
-- **Vercel** (deployment)
+### 🔍 Funcționalități
+- **Căutare full-text** cu autocomplete și debounce
+- **Filtrare după categorie** și regiune
+- **Quiz interactiv** pentru testarea cunoștințelor
+- **Contribuții comunitare** cu sistem de validare
+- **Share social** (Web Share API)
+- **Favorite/Love** cu state management
 
 ## 🚀 Quick Start
 
-### Prерезquisite
+### Prerequisites
 
 ```bash
 node >= 18.0.0
-pnpm >= 8.0.0
-postgresql >= 14.0
+npm >= 9.0.0
 ```
 
-### Instalare
+### Installation
 
 ```bash
 # Clone repository
@@ -49,188 +48,169 @@ git clone https://github.com/Gzeu/vorbabuna.git
 cd vorbabuna
 
 # Install dependencies
-pnpm install
+npm install
 
-# Setup environment variables
+# Setup environment
 cp .env.example .env.local
-# Edit .env.local cu API keys
 
 # Setup database
-pnpm prisma generate
-pnpm prisma db push
-pnpm prisma db seed
+npx prisma db push
+npx prisma generate
 
-# Start development server
-pnpm dev
+# Seed database with proverbs
+npm run db:seed
+
+# Run development server
+npm run dev
 ```
 
-Vizitează [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000) to see the app.
 
-## 🔑 Environment Variables
+## 📊 Database Schema
 
-Crează `.env.local` cu următoarele:
-
-```bash
-# Database
-DATABASE_URL="postgresql://user:password@localhost:5432/vorbabuna"
-
-# OpenAI
-OPENAI_API_KEY="sk-..."
-
-# Google Cloud (pentru TTS)
-GOOGLE_CREDENTIALS='{"type":"service_account","project_id":"..."}'
-
-# Next.js
-NEXT_PUBLIC_APP_URL="http://localhost:3000"
+```prisma
+model Proverb {
+  id           Int      @id @default(autoincrement())
+  text         String   @unique
+  meaning      String
+  category     String
+  region       String?
+  keywords     String   // JSON array
+  imagePrompt  String
+  imageUrl     String?
+  audioUrl     String?
+  popularity   Int      @default(0)
+  source       String?
+  validated    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  userId       String?
+}
 ```
 
-## 📚 Structura Proiectului
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/proverb` | Random proverb |
+| GET | `/api/proverb/search?q=term` | Full-text search |
+| GET | `/api/proverb/:id` | Specific proverb |
+| GET | `/api/proverb/category?name=cat` | Filter by category |
+| POST | `/api/contribute` | Submit new proverb |
+
+## 🎨 Design System
+
+### Colors
+
+```typescript
+folk: {
+  red: '#C41E3A',      // Roșu ie tradițională
+  yellow: '#FECE00',   // Galben miere
+  blue: '#002868',     // Albastru ceresc
+  brown: '#8B4513',    // Maro pământ
+  cream: '#FFF8DC',    // Crem natural
+  gold: '#DAA520',     // Auriu fir
+}
+```
+
+### Typography
+
+- **Display**: Cinzel Decorative (headers)
+- **Serif**: Playfair Display (proverbs)
+- **Sans**: Inter (body text)
+
+## 📱 Project Structure
 
 ```
 vorbabuna/
 ├── src/
-│   ├── app/                  # Next.js App Router
+│   ├── app/
 │   │   ├── api/              # API routes
-│   │   │   ├── proverbs/     # Proverbs endpoints
-│   │   │   ├── tts/          # Text-to-speech
-│   │   │   └── generate-image/ # AI image generation
-│   │   ├── page.tsx          # Home page
+│   │   ├── search/           # Search page
+│   │   ├── quiz/             # Quiz page
+│   │   ├── contribute/       # Contribution form
+│   │   ├── proverb/[id]/     # Individual proverb
 │   │   ├── layout.tsx        # Root layout
-│   │   └── globals.css       # Global styles
-│   ├── components/           # React components
-│   │   ├── ProverbGallery.tsx
-│   │   ├── ProverbCard.tsx
-│   │   ├── Header.tsx
-│   │   └── Footer.tsx
-│   ├── lib/                  # Utility libraries
+│   │   └── page.tsx          # Home page
+│   ├── components/
+│   │   ├── ui/               # Reusable UI components
+│   │   ├── Navigation.tsx
+│   │   ├── Footer.tsx
+│   │   ├── SearchBar.tsx
+│   │   └── ProverbCardEnhanced.tsx
+│   ├── lib/
 │   │   ├── db.ts             # Prisma client
-│   │   ├── proverbs.ts       # Proverb utilities
-│   │   ├── tts.ts            # Text-to-speech
-│   │   └── ai/
-│   │       └── image-generation.ts
-│   └── types/                # TypeScript types
-│       └── proverb.ts
+│   │   ├── pollinations.ts   # Image generation
+│   │   └── utils.ts          # Helper functions
+│   └── types/
 ├── prisma/
-│   ├── schema.prisma         # Database schema
-│   └── seed.ts               # Seed data
-├── public/                   # Static assets
-├── package.json
-├── tsconfig.json
-├── tailwind.config.ts
-└── next.config.js
+│   └── schema.prisma     # Database schema
+├── public/
+├── scripts/
+│   └── seed-proverbs.ts  # Database seeding
+└── data/
+    └── proverbs.json     # Proverbs collection
 ```
 
-## 📝 API Endpoints
+## 🛠️ Tech Stack
 
-### GET `/api/proverbs`
-Obține lista de proverbe cu paginație și căutare.
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS, Framer Motion
+- **Database**: Prisma ORM + SQLite (dev) / PostgreSQL (prod)
+- **Image Generation**: Pollinations.ai (free, no API key)
+- **Icons**: Lucide React
+- **Deployment**: Vercel
 
-**Query params:**
-- `page` - Numărul paginii (default: 1)
-- `limit` - Rezultate per pagină (default: 20)
-- `q` - Query de căutare (opțional)
-
-### POST `/api/tts`
-Generează audio pentru un text dat.
-
-**Body:**
-```json
-{
-  "text": "Proverb românesc"
-}
-```
-
-### POST `/api/generate-image`
-Generează imagine AI pentru un proverb.
-
-**Body:**
-```json
-{
-  "proverb": "Textul proverbului"
-}
-```
-
-## 🛡️ Development
+## 📝 Scripts
 
 ```bash
-# Development mode with hot reload
-pnpm dev
-
-# Type checking
-pnpm type-check
-
-# Linting
-pnpm lint
-
-# Build for production
-pnpm build
-
-# Start production server
-pnpm start
-
-# Database migrations
-pnpm prisma migrate dev
-pnpm prisma studio  # Database GUI
+npm run dev         # Start development server
+npm run build       # Build for production
+npm run start       # Start production server
+npm run lint        # Run ESLint
+npm run format      # Format with Prettier
+npm run db:push     # Push schema to database
+npm run db:seed     # Seed database with proverbs
+npm run db:migrate  # Run Prisma migrations
 ```
 
-## 🚀 Deployment
+## 🌐 Deployment
 
 ### Vercel (Recommended)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Gzeu/vorbabuna)
+1. Push to GitHub
+2. Import project in Vercel
+3. Add environment variables
+4. Deploy!
 
-1. Connect repository to Vercel
-2. Add environment variables
-3. Deploy!
+### Environment Variables
 
-### Docker
-
-```bash
-# Build image
-docker build -t vorbabuna .
-
-# Run container
-docker run -p 3000:3000 --env-file .env.local vorbabuna
+```env
+DATABASE_URL="postgresql://..."
+NEXT_PUBLIC_APP_URL="https://vorbabuna.vercel.app"
 ```
-
-## 📊 Roadmap
-
-- [ ] User authentication & profiles
-- [ ] Advanced search filters (categorie, regiune, popularitate)
-- [ ] Daily proverb notifications
-- [ ] Community contributions
-- [ ] Mobile app (React Native)
-- [ ] API public documentation
-- [ ] Multilingual support
-- [ ] Gamification & badges
 
 ## 🤝 Contributing
 
 Contribuțiile sunt binevenite! Vezi [CONTRIBUTING.md](CONTRIBUTING.md) pentru detalii.
 
-1. Fork proiectul
-2. Crează branch pentru feature (`git checkout -b feature/AmazingFeature`)
-3. Commit schimbările (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Deschide Pull Request
+## 📜 License
 
-## 📝 License
+MIT License - vezi [LICENSE](LICENSE) pentru detalii.
 
-Acest proiect este licențiat sub MIT License - vezi [LICENSE](LICENSE) pentru detalii.
+## 👥 Credits
 
-## 👤 Author
+- **Design inspirație**: Ie tradițională românească
+- **Proverbe**: Wikipedia, WikiQuote, Gokid.ro
+- **Imagini**: Pollinations.ai
+- **Icons**: Lucide React
 
-**George** - [@Gzeu](https://github.com/Gzeu)
+## 📧 Contact
 
-## 🙏 Mulțumiri
-
-- Proverbe colectate din surse autentice de folclor românesc
-- OpenAI pentru DALL-E 3 și GPT-4
-- Google Cloud pentru Text-to-Speech
-- Comunitatea open-source
+- **GitHub**: [@Gzeu](https://github.com/Gzeu)
+- **Email**: contact@vorbabuna.ro
+- **Website**: [vorbabuna.vercel.app](https://vorbabuna.vercel.app)
 
 ---
 
-<p align="center">
-  Made with ❤️ in Romania 🇷🇴
-</p>
+Făcut cu ❤️ în România
