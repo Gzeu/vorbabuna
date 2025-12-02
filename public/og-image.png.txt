@@ -1,0 +1,24 @@
+# OG Image Placeholder
+
+This file is a placeholder for the OpenGraph image.
+
+To create the actual OG image:
+1. Create a 1200x630px image with:
+   - VorbaBună logo
+   - Romanian folk pattern background
+   - Text: "Proverbe Românești Ilustrate cu AI"
+   - Traditional colors: #C41E3A, #FECE00, #002868
+
+2. Save as: public/og-image.png
+
+3. Tools to use:
+   - Canva (canva.com)
+   - Figma (figma.com)
+   - Photoshop
+   - Or use an AI generator like DALL-E, Midjourney
+
+Recommended design:
+- Background: cream (#FFF8DC) with folk pattern overlay
+- Center: Large text with the site name
+- Bottom: Tagline or sample proverb
+- Corners: Decorative folk motifs

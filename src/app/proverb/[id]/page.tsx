@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { use } from 'react';
 import ProverbCardEnhanced from '@/components/ProverbCardEnhanced';
-import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { ProverbCardSkeleton } from '@/components/ui/SkeletonLoader';
 import FolkButton from '@/components/ui/FolkButton';
 import { ArrowLeft, Shuffle } from 'lucide-react';
 import Link from 'next/link';
@@ -34,6 +34,11 @@ export default function ProverbPage({ params }: { params: Promise<{ id: string }
       if (res.ok) {
         const data = await res.json();
         setProverb(data);
+        
+        // Update document title
+        if (data.text) {
+          document.title = `${data.text} - VorbaBună`;
+        }
       }
     } catch (error) {
       console.error('Failed to fetch proverb:', error);
@@ -52,23 +57,40 @@ export default function ProverbPage({ params }: { params: Promise<{ id: string }
     <div className="container mx-auto px-6 py-16">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <Link href="/">
+          <Link href="/" aria-label="Înapoi la pagină principală">
             <FolkButton variant="outline" size="sm">
               <ArrowLeft size={16} className="inline mr-2" />
               Înapoi
             </FolkButton>
           </Link>
-          <FolkButton onClick={handleRandom} size="sm">
+          <FolkButton onClick={handleRandom} size="sm" aria-label="Proverb aleatoriu">
             <Shuffle size={16} className="inline mr-2" />
             Aleatoriu
           </FolkButton>
         </div>
 
         {loading ? (
-          <LoadingSpinner />
+          <ProverbCardSkeleton />
         ) : proverb ? (
           <div className="animate-fade-in">
             <ProverbCardEnhanced proverb={proverb} />
+            
+            {/* Structured data for SEO */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'Article',
+                  headline: proverb.text,
+                  description: proverb.meaning,
+                  author: {
+                    '@type': 'Organization',
+                    name: 'VorbaBună',
+                  },
+                }),
+              }}
+            />
           </div>
         ) : (
           <div className="text-center py-16">
