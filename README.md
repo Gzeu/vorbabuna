@@ -2,11 +2,21 @@
 
 > Descoperă înțelepciunea strămoșească românească printr-o experiență modernă și interactivă
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
-[![Prisma](https://img.shields.io/badge/Prisma-5.7-2d3748)](https://www.prisma.io/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-5.7-2d3748?style=for-the-badge&logo=prisma)](https://www.prisma.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Gzeu/vorbabuna)
+
+---
+
+## 📸 Preview
+
+> **Live Demo**: [vorbabuna.vercel.app](https://vorbabuna.vercel.app)
+
+---
 
 ## ✨ Features
 
@@ -18,8 +28,8 @@
 - **Dark mode ready**: Teme vizuale cu motive populare românești
 
 ### 📚 Conținut
-- **1000+ Proverbe autentice** din toate regiunile României
-- **12 Categorii**: filozofie, familie, muncă, natură, dragoste, prietenie, etc.
+- **50+ Proverbe autentice** din toate regiunile României (extensibil la 1000+)
+- **6 Categorii**: filozofie, familie, muncă, natură, dragoste, prietenie
 - **Imagini AI**: Fiecare proverb are ilustrații unice generate de Pollinations.ai
 - **Text-to-Speech**: Pronunție vocală pentru fiecare proverb
 
@@ -30,6 +40,10 @@
 - **Contribuții comunitare** cu sistem de validare
 - **Share social** (Web Share API)
 - **Favorite/Love** cu state management
+- **Error handling** profesional (404, error boundaries)
+- **SEO optimized** (sitemap, robots.txt, meta tags)
+
+---
 
 ## 🚀 Quick Start
 
@@ -57,7 +71,7 @@ cp .env.example .env.local
 npx prisma db push
 npx prisma generate
 
-# Seed database with proverbs
+# Seed database with 50 proverbs
 npm run db:seed
 
 # Run development server
@@ -65,6 +79,8 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+---
 
 ## 📊 Database Schema
 
@@ -77,16 +93,13 @@ model Proverb {
   region       String?
   keywords     String   // JSON array
   imagePrompt  String
-  imageUrl     String?
-  audioUrl     String?
-  popularity   Int      @default(0)
-  source       String?
   validated    Boolean  @default(false)
+  popularity   Int      @default(0)
   createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  userId       String?
 }
 ```
+
+---
 
 ## 📡 API Endpoints
 
@@ -97,6 +110,8 @@ model Proverb {
 | GET | `/api/proverb/:id` | Specific proverb |
 | GET | `/api/proverb/category?name=cat` | Filter by category |
 | POST | `/api/contribute` | Submit new proverb |
+
+---
 
 ## 🎨 Design System
 
@@ -119,47 +134,41 @@ folk: {
 - **Serif**: Playfair Display (proverbs)
 - **Sans**: Inter (body text)
 
+---
+
 ## 📱 Project Structure
 
 ```
 vorbabuna/
 ├── src/
-│   ├── app/
-│   │   ├── api/              # API routes
-│   │   ├── search/           # Search page
-│   │   ├── quiz/             # Quiz page
-│   │   ├── contribute/       # Contribution form
-│   │   ├── proverb/[id]/     # Individual proverb
-│   │   ├── layout.tsx        # Root layout
-│   │   └── page.tsx          # Home page
-│   ├── components/
-│   │   ├── ui/               # Reusable UI components
-│   │   ├── Navigation.tsx
-│   │   ├── Footer.tsx
-│   │   ├── SearchBar.tsx
-│   │   └── ProverbCardEnhanced.tsx
-│   ├── lib/
-│   │   ├── db.ts             # Prisma client
-│   │   ├── pollinations.ts   # Image generation
-│   │   └── utils.ts          # Helper functions
-│   └── types/
-├── prisma/
-│   └── schema.prisma     # Database schema
-├── public/
-├── scripts/
-│   └── seed-proverbs.ts  # Database seeding
-└── data/
-    └── proverbs.json     # Proverbs collection
+│   ├── app/              # Next.js 14 App Router
+│   │   ├── api/          # API routes
+│   │   ├── search/       # Search page
+│   │   ├── quiz/         # Quiz page
+│   │   ├── contribute/   # Contribution form
+│   │   └── proverb/[id]/ # Individual proverb
+│   ├── components/   # React components
+│   ├── lib/          # Utilities (db, pollinations, utils)
+│   └── types/        # TypeScript types
+├── public/           # Static assets
+├── prisma/           # Database schema
+├── scripts/          # Seed scripts
+└── data/             # Sample data
 ```
+
+---
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 14, React 18, TypeScript
 - **Styling**: Tailwind CSS, Framer Motion
-- **Database**: Prisma ORM + SQLite (dev) / PostgreSQL (prod)
+- **Database**: Prisma ORM + PostgreSQL
 - **Image Generation**: Pollinations.ai (free, no API key)
 - **Icons**: Lucide React
 - **Deployment**: Vercel
+- **CI/CD**: GitHub Actions
+
+---
 
 ## 📝 Scripts
 
@@ -173,30 +182,36 @@ npm run db:push     # Push schema to database
 npm run db:seed     # Seed database with proverbs
 npm run db:migrate  # Run Prisma migrations
 ```
+---
 
 ## 🌐 Deployment
 
-### Vercel (Recommended)
+### One-Click Deploy
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Gzeu/vorbabuna&env=DATABASE_URL&envDescription=PostgreSQL%20connection%20string&project-name=vorbabuna&repository-name=vorbabuna)
+
+### Manual Deployment
 
 1. Push to GitHub
 2. Import project in Vercel
-3. Add environment variables
-4. Deploy!
+3. Add environment variable: `DATABASE_URL`
+4. Deploy automatically!
 
-### Environment Variables
+See [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md) for detailed guide.
 
-```env
-DATABASE_URL="postgresql://..."
-NEXT_PUBLIC_APP_URL="https://vorbabuna.vercel.app"
-```
+---
 
 ## 🤝 Contributing
 
 Contribuțiile sunt binevenite! Vezi [CONTRIBUTING.md](CONTRIBUTING.md) pentru detalii.
 
+---
+
 ## 📜 License
 
 MIT License - vezi [LICENSE](LICENSE) pentru detalii.
+
+---
 
 ## 👥 Credits
 
@@ -204,13 +219,22 @@ MIT License - vezi [LICENSE](LICENSE) pentru detalii.
 - **Proverbe**: Wikipedia, WikiQuote, Gokid.ro
 - **Imagini**: Pollinations.ai
 - **Icons**: Lucide React
+- **Developer**: [@Gzeu](https://github.com/Gzeu)
+
+---
 
 ## 📧 Contact
 
 - **GitHub**: [@Gzeu](https://github.com/Gzeu)
-- **Email**: contact@vorbabuna.ro
 - **Website**: [vorbabuna.vercel.app](https://vorbabuna.vercel.app)
+- **Issues**: [GitHub Issues](https://github.com/Gzeu/vorbabuna/issues)
 
 ---
 
-Făcut cu ❤️ în România
+## 🌟 Star History
+
+If you like this project, please consider giving it a star ⭐️
+
+---
+
+Făcut cu ❤️ în România 🇷🇴
