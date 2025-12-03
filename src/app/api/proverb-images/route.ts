@@ -3,12 +3,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
-interface GenerateImagePromptParams { {
-  proverbText: string;
+interface GenerateImagePromptParams { 
+  proverb Text: string;
   category: string | null;
-  region?: string | null;proverbText: string;
-  category: string;
-  region?: string;
+  region?: string | null;
 }
 
 /**
