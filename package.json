@@ -2,8 +2,7 @@
   "name": "vorbabuna",
   "version": "1.0.0",
   "description": "Proverbe Românești Ilustrate cu AI - Aplicație web full-stack",
-  "author": "George Gîdei <gzeu@users.noreply.github.com>",
-  "license": "MIT",
+    "author": "George Pricop <gzeu@users.noreply.github.com>",  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Gzeu/vorbabuna.git"
