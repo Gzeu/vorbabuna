@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
 interface GenerateImagePromptParams { 
-  proverb Text: string;
+  proverbText: string;
   category: string | null;
   region?: string | null;
 }
