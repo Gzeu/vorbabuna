@@ -40,8 +40,7 @@ export default function ProverbCardEnhanced({ proverb }: ProverbCardEnhancedProp
       {/* Imagine cu overlay gradient */}
       <div className="relative h-96 rounded-t-3xl overflow-hidden group">
         <Image
-          src={proverb.imageUrl}
-          alt={proverb.text}
+    src={proverb.imageUrl || 'https://images.unsplash.com/photo-1507842217343-583f20270fe0?w=800&q=80'}          alt={proverb.text}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-110"
           priority
