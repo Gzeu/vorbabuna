@@ -3,8 +3,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
-interface GenerateImagePromptParams {
+interface GenerateImagePromptParams { {
   proverbText: string;
+  category: string | null;
+  region?: string | null;proverbText: string;
   category: string;
   region?: string;
 }
@@ -83,9 +85,8 @@ export async function POST(request: NextRequest) {
     // Generate Pollinations prompt
     const prompt = generatePollinationsPrompt({
       proverbText: proverb.text,
-      category: proverb.categor ?? 'Intelepciune',
-      region: proverb.regio ?? undefined,
-    });
+      category: proverb.category,    });
+          region: proverb.region,
 
     // Get image URL
     const imageUrl = await generatePollinationsImage(prompt);
@@ -180,9 +181,7 @@ export async function PUT(request: NextRequest) {
 
         const prompt = generatePollinationsPrompt({
           proverbText: proverb.text,
-          category: proverb.categor ?? 'Intelepciune',
-          region: proverb.regio ?? undefined,
-        });
+        region: proverb.region,        });
 
         const imageUrl = await generatePollinationsImage(prompt);
 
