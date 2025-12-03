@@ -1,0 +1,100 @@
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    transparent 100%
+  );
+}
+
+.separatorLine {
+  height: 2px;
+  flex: 1;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    #c41e3a 50%,
+    transparent 100%
+  );
+}
+
+.quoteMark {
+  color: #daa520;
+  font-size: 3.75rem;
+  font-family: 'Playfair Display', serif;
+  position: absolute;
+  top: -1rem;
+  left: 1rem;
+  line-height: 1;
+}
+
+.cardContainer {
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.imageContainer {
+  position: relative;
+  height: 24rem;
+  border-radius: 1.5rem 1.5rem 0 0;
+  overflow: hidden;
+}
+
+.imageContainer:hover img {
+  transform: scale(1.1);
+}
+
+.contentCard {
+  background: white;
+  border-radius: 0 0 1.5rem 1.5rem;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  margin-top: -2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.proverbText {
+  font-size: 1.875rem;
+  font-family: 'Playfair Display', serif;
+  color: #8b4513;
+  line-height: 1.6;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.separatorContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.meaningText {
+  font-size: 1.125rem;
+  color: #374151;
+  line-height: 1.625;
+}
+
+.meaningLabel {
+  font-weight: 600;
+  color: #c41e3a;
+}
+
+.regionInfo {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.regionName {
+  font-weight: 500;
+  color: #8b4513;
+}
