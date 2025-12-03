@@ -28,7 +28,7 @@ function generatePollinationsPrompt(params: GenerateImagePromptParams): string {
     'Viață': 'life journey, seasons cycle, growth and transformation, philosophical beauty',
   };
 
-  const basePrompt = categoryPrompts[category] || 'Romanian folk wisdom, traditional art, cultural heritage';
+  const basePrompt = categoryPrompts[category ?? 'Intelepciune'] || 'Romanian folk wisdom, traditional art, cultural heritage';
   const regionContext = region ? `, from ${region} region of Romania` : '';
   
   return `Illustrate Romanian proverb wisdom: "${proverbText}". Style: traditional Romanian folk art, watercolor painting, nostalgic mood, warm earthly colors (gold, rust, cream, brown). Context: ${basePrompt}${regionContext}. High quality, detailed, cultural authenticity, 16:9 aspect ratio`;
