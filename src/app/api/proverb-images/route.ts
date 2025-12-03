@@ -83,8 +83,9 @@ export async function POST(request: NextRequest) {
     // Generate Pollinations prompt
     const prompt = generatePollinationsPrompt({
       proverbText: proverb.text,
-      category: proverb.category,    });
+      category: proverb.category,   
           region: proverb.region,
+      });
 
     // Get image URL
     const imageUrl = await generatePollinationsImage(prompt);
