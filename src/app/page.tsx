@@ -9,12 +9,13 @@ import { Sparkles, BookOpen, Users, Zap } from 'lucide-react';
 import Link from 'next/link';
 
 interface Proverb {
-  id: number;
+  id: string; // MongoDB ObjectId
   text: string;
   meaning: string;
-  category: string;
-  region?: string;
-  imageUrl: string;
+  category: string | null;
+  region?: string | null;
+  imageUrl?: string | null;
+  imagePrompt?: string | null;
 }
 
 export default function Home() {
