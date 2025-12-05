@@ -61,9 +61,9 @@ export async function POST(request: NextRequest) {
   try {
     const { proverbId } = await request.json();
 
-    if (!proverbId) {
+    if (!proverbId || typeof proverbId !== 'string') {
       return NextResponse.json(
-        { error: 'proverbId is required' },
+        { error: 'proverbId (string) is required' },
         { status: 400 }
       );
     }
@@ -84,8 +84,8 @@ export async function POST(request: NextRequest) {
     const prompt = generatePollinationsPrompt({
       proverbText: proverb.text,
       category: proverb.category,   
-          region: proverb.region,
-      });
+      region: proverb.region,
+    });
 
     // Get image URL
     const imageUrl = await generatePollinationsImage(prompt);
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error in proverb-images API:', error);
     return NextResponse.json(
-      { error: 'Failed to generate image' },
+      { error: 'Failed to generate image', details: String(error) },
       { status: 500 }
     );
   }
@@ -132,7 +132,7 @@ export async function GET(request: NextRequest) {
 
     const proverb = await prisma.proverb.findUnique({
       where: { id: proverbId },
-      select: { imageUrl: true, imagePrompt: true },
+      select: { id: true, imageUrl: true, imagePrompt: true },
     });
 
     if (!proverb) {
@@ -146,26 +146,44 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error fetching image:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch image' },
+      { error: 'Failed to fetch image', details: String(error) },
       { status: 500 }
     );
   }
 }
 
 /**
- * POST /api/proverb-images/batch
- * Generate images for multiple proverbs
- * Body: { proverbIds: string[] }
+ * PUT /api/proverb-images
+ * Generate images for multiple proverbs (batch processing)
+ * Body: { proverbIds?: string[] } - if empty, processes all proverbs without images
  */
 export async function PUT(request: NextRequest) {
   try {
-    const { proverbIds } = await request.json();
+    const body = await request.json();
+    let proverbIds: string[] = body?.proverbIds || [];
 
-    if (!Array.isArray(proverbIds) || proverbIds.length === 0) {
-      return NextResponse.json(
-        { error: 'proverbIds array is required and cannot be empty' },
-        { status: 400 }
-      );
+    // If no IDs provided, fetch all proverbs without images
+    if (proverbIds.length === 0) {
+      const proverbsWithoutImages = await prisma.proverb.findMany({
+        where: {
+          OR: [
+            { imageUrl: null },
+            { imageUrl: '' }
+          ]
+        },
+        select: { id: true },
+        take: 50 // Limit to 50 at a time to avoid timeouts
+      });
+      proverbIds = proverbsWithoutImages.map(p => p.id);
+    }
+
+    if (proverbIds.length === 0) {
+      return NextResponse.json({
+        success: true,
+        message: 'No proverbs to process',
+        processed: 0,
+        results: []
+      });
     }
 
     const results = [];
@@ -176,11 +194,20 @@ export async function PUT(request: NextRequest) {
           where: { id: proverbId },
         });
 
-        if (!proverb) continue;
+        if (!proverb) {
+          results.push({
+            proverbId,
+            success: false,
+            error: 'Proverb not found'
+          });
+          continue;
+        }
 
         const prompt = generatePollinationsPrompt({
           proverbText: proverb.text,
-        region: proverb.region,        });
+          category: proverb.category,
+          region: proverb.region,
+        });
 
         const imageUrl = await generatePollinationsImage(prompt);
 
@@ -206,15 +233,20 @@ export async function PUT(request: NextRequest) {
       }
     }
 
+    const successCount = results.filter(r => r.success).length;
+    const failureCount = results.filter(r => !r.success).length;
+
     return NextResponse.json({
       success: true,
       processed: results.length,
+      successCount,
+      failureCount,
       results,
     });
   } catch (error) {
     console.error('Error in batch image generation:', error);
     return NextResponse.json(
-      { error: 'Failed to generate batch images' },
+      { error: 'Failed to generate batch images', details: String(error) },
       { status: 500 }
     );
   }
