@@ -1,23 +1,123 @@
 {
   "name": "VorbaBună - Proverbe Românești",
   "short_name": "VorbaBună",
-  "description": "Descoperă înțelepciunea populară românească prin proverbe ilustrate cu AI",
+  "description": "Descoperă înțelepciunea proverbelor românești cu AI, gamification și comunitate",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FFF8DC",
-  "theme_color": "#C41E3A",
-  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#c41e3a",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ro",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "/logo.svg",
-      "sizes": "48x48",
-      "type": "image/svg+xml",
+      "src": "/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/favicon.svg",
-      "sizes": "32x32",
-      "type": "image/svg+xml"
+      "src": "/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": [
+    "education",
+    "lifestyle",
+    "entertainment",
+    "social"
+  ],
+  "shortcuts": [
+    {
+      "name": "Proverb Aleatoriu",
+      "short_name": "Random",
+      "description": "Vezi un proverb aleatoriu",
+      "url": "/random",
+      "icons": [
+        {
+          "src": "/icon-random.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Favorite",
+      "short_name": "Favorite",
+      "description": "Proverbele tale favorite",
+      "url": "/favorites",
+      "icons": [
+        {
+          "src": "/icon-heart.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Provocarea Zilei",
+      "short_name": "Challenge",
+      "description": "Vezi provocarea de azi",
+      "url": "/challenges",
+      "icons": [
+        {
+          "src": "/icon-trophy.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
