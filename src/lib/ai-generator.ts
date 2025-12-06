@@ -1,7 +1,9 @@
 /**
- * AI-Powered Proverb Generator using Gemini API
+ * AI-Powered Proverb Generator using Pollinations AI
  * Generates authentic Romanian proverbs with meanings
  */
+
+import { generatePollinationsImage, generatePollinationsPrompt } from './pollinations';
 
 export interface GeneratedProverb {
   text: string;
@@ -10,6 +12,8 @@ export interface GeneratedProverb {
   region?: string;
   keywords: string[];
   confidence: number;
+  imageUrl?: string;
+  imagePrompt?: string;
 }
 
 export interface GenerationOptions {
@@ -18,10 +22,11 @@ export interface GenerationOptions {
   style?: 'traditional' | 'modern' | 'poetic';
   length?: 'short' | 'medium' | 'long';
   count?: number;
+  generateImage?: boolean;
 }
 
 /**
- * Generate new proverbs using AI
+ * Generate new proverbs using Pollinations AI
  */
 export async function generateProverbs(
   options: GenerationOptions = {}
@@ -31,24 +36,37 @@ export async function generateProverbs(
     region,
     style = 'traditional',
     length = 'medium',
-    count = 1
+    count = 1,
+    generateImage = false
   } = options;
 
-  const prompt = buildGenerationPrompt(category, region, style, length, count);
-
   try {
-    // Use Gemini API or fallback to pattern-based generation
-    const apiKey = process.env.GEMINI_API_KEY;
-    
-    if (apiKey) {
-      return await generateWithGemini(prompt, apiKey, count);
-    } else {
-      // Fallback to pattern-based generation
-      return generateWithPatterns(category, region, count);
+    const prompt = buildGenerationPrompt(category, region, style, length, count);
+    const proverbs = await generateWithPollinations(prompt, count);
+
+    // Generate images if requested
+    if (generateImage) {
+      for (const proverb of proverbs) {
+        try {
+          const imagePrompt = generatePollinationsPrompt(
+            proverb.text,
+            proverb.meaning,
+            category,
+            region
+          );
+          const imageUrl = generatePollinationsImage(imagePrompt);
+          proverb.imageUrl = imageUrl;
+          proverb.imagePrompt = imagePrompt;
+        } catch (error) {
+          console.error('Error generating image:', error);
+        }
+      }
     }
+
+    return proverbs;
   } catch (error) {
     console.error('Error generating proverbs:', error);
-    return [];
+    return generateWithPatterns(category, region, count);
   }
 }
 
@@ -70,58 +88,101 @@ function buildGenerationPrompt(
   }[length];
 
   return `
-Generează ${count} proverbe românești autentice despre categoria "${category}"${regionContext}.
+Ești un expert în înțelepciunea populară românească. Generează ${count} proverbe românești autentice despre "${category}"${regionContext}.
 
-Stil: ${style}
-Lungime: ${lengthGuide}
+Caracteristici:
+- Stil: ${style}
+- Lungime: ${lengthGuide}
+- Limbaj: Românesc autentic
+- Structură: Clasică proverbială
 
-Fiecare proverb trebuie să fie:
-- Autentic și să sune natural în română
-- Să conțină înțelepciune poplară
-- Să fie inedit (să nu existe deja)
-- Să respecte structura proverbelor românești
+Pentru fiecare proverb, returnează în format JSON:
+{
+  "text": "textul proverbului",
+  "meaning": "explicația detaliată",
+  "keywords": ["cuvânt1", "cuvânt2", "cuvânt3"]
+}
 
-Pentru fiecare proverb, furnizează:
-1. Textul proverbului
-2. Semnificația/Explicația
-3. 3-5 cuvinte cheie
-
-Răspunde în format JSON.
+Răspunde DOAR cu array-ul JSON, fără text adițional.
   `.trim();
 }
 
 /**
- * Generate using Gemini AI
+ * Generate using Pollinations AI
  */
-async function generateWithGemini(
+async function generateWithPollinations(
   prompt: string,
-  apiKey: string,
   count: number
 ): Promise<GeneratedProverb[]> {
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            temperature: 0.9,
-            maxOutputTokens: 1024
+    // Use Pollinations text API with turbo model for fast generation
+    const response = await fetch('https://text.pollinations.ai/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: [
+          {
+            role: 'system',
+            content: 'Ești un expert în proverbe și înțelepciune populară românească. Răspunzi DOAR în JSON valid.'
+          },
+          {
+            role: 'user',
+            content: prompt
           }
-        })
-      }
-    );
+        ],
+        model: 'openai', // Can be: openai, mistral, turbo
+        jsonMode: true,
+        seed: Math.floor(Math.random() * 1000000)
+      })
+    });
 
-    const data = await response.json();
-    const text = data.candidates[0].content.parts[0].text;
-    
-    // Parse JSON response
+    const text = await response.text();
     return parseGeneratedProverbs(text, count);
   } catch (error) {
-    console.error('Gemini API error:', error);
+    console.error('Pollinations API error:', error);
     throw error;
+  }
+}
+
+/**
+ * Parse AI-generated proverbs from text
+ */
+function parseGeneratedProverbs(text: string, count: number): GeneratedProverb[] {
+  try {
+    // Try to parse JSON response
+    let parsed;
+    
+    // Remove markdown code blocks if present
+    const cleanText = text.replace(/```json\n?|```\n?/g, '').trim();
+    
+    // Try direct parse
+    try {
+      parsed = JSON.parse(cleanText);
+    } catch {
+      // Try to extract JSON array
+      const jsonMatch = cleanText.match(/\[.*\]/s);
+      if (jsonMatch) {
+        parsed = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('No valid JSON found');
+      }
+    }
+
+    // Ensure it's an array
+    const proverbsArray = Array.isArray(parsed) ? parsed : [parsed];
+
+    return proverbsArray.slice(0, count).map(item => ({
+      text: item.text || item.proverb || '',
+      meaning: item.meaning || item.explanation || '',
+      category: item.category || 'Intelepciune',
+      keywords: item.keywords || [],
+      confidence: 0.85
+    }));
+  } catch (error) {
+    console.error('Error parsing proverbs:', error);
+    return [];
   }
 }
 
@@ -138,31 +199,14 @@ function generateWithPatterns(
 
   for (let i = 0; i < count && i < patterns.length; i++) {
     results.push({
-      text: patterns[i].text,
-      meaning: patterns[i].meaning,
+      ...patterns[i],
       category,
       region,
-      keywords: patterns[i].keywords,
       confidence: 0.7
     });
   }
 
   return results;
-}
-
-/**
- * Parse AI-generated proverbs from text
- */
-function parseGeneratedProverbs(text: string, count: number): GeneratedProverb[] {
-  try {
-    const jsonMatch = text.match(/\[.*\]/s);
-    if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      return parsed.slice(0, count);
-    }
-  } catch {}
-
-  return [];
 }
 
 /**
@@ -172,9 +216,14 @@ function getProverbPatterns(category: string) {
   const patterns: Record<string, any[]> = {
     'Intelepciune': [
       {
-        text: 'Cine învață mereu, nu îmbtrânește niciodată',
-        meaning: 'Învățătura continuă menține mintea tânără',
+        text: 'Cine învață mereu, nu îmbătrânește niciodată',
+        meaning: 'Învățătura continuă menține mintea tânără și activă',
         keywords: ['învățare', 'tinerețe', 'cunoștință']
+      },
+      {
+        text: 'Mai bine singur decât prost însoțit',
+        meaning: 'E preferabil să fii singur decât să ai companie rea',
+        keywords: ['singurătate', 'prietenie', 'alegeri']
       }
     ],
     'Familie': [
@@ -182,6 +231,13 @@ function getProverbPatterns(category: string) {
         text: 'Casa fără copii e ca grădina fără flori',
         meaning: 'Copiii aduc bucurie și viață în casă',
         keywords: ['familie', 'copii', 'bucurie']
+      }
+    ],
+    'Munca': [
+      {
+        text: 'Munca cinstită nu îmbogățește, dar cinstea nu sărăcește',
+        meaning: 'Onestitatea și munca sunt mai importante decât bogăția',
+        keywords: ['muncă', 'cinste', 'valori']
       }
     ]
   };
@@ -200,4 +256,20 @@ export function validateProverb(proverb: GeneratedProverb): boolean {
     proverb.keywords.length >= 2 &&
     proverb.confidence >= 0.5
   );
+}
+
+/**
+ * Generate proverb with Pollinations (simplified API)
+ */
+export async function generateSimpleProverb(category: string): Promise<string> {
+  try {
+    const response = await fetch(
+      `https://text.pollinations.ai/Generează un proverb românesc despre ${category}`,
+      { method: 'GET' }
+    );
+    return await response.text();
+  } catch (error) {
+    console.error('Error generating simple proverb:', error);
+    return 'Cine seamănă vânt, culege furtună';
+  }
 }
